@@ -242,10 +242,16 @@
       display: block;
     }
     .lang-toggle {
-      top: 14px;
-      right: 16px;
-      font-size: 16px;
+      position: static;
+      top: auto;
+      right: auto;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 18px;
+      margin-bottom: 10px;
+      padding: 0;
     }
+    .lang-toggle button { padding: 4px 6px; transform: rotate(-3deg); }
     .header { justify-content: center; margin-bottom: 22px; }
     .logo .brand { font-size: 34px; }
     .logo .sub { font-size: 11px; margin-top: 3px; text-align: center; }
