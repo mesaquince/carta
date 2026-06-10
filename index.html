@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carta Mesaquince — Prueba</title>
+<style>
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('Fonts/GeistMono-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('Fonts/GeistMono-Medium.ttf') format('truetype');
+    font-weight: 500; font-style: normal;
+  }
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('Fonts/GeistMono-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'Agrandir';
+    src: url('Fonts/Agrandir-TextBold.otf') format('opentype');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'LaLetraDeDios';
+    src: url('Fonts/LaLetraDeD10S-Bold.otf') format('opentype');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'LaLetraDeDios';
+    src: url('Fonts/LaLetraDeD10S-Regular.otf') format('opentype');
+    font-weight: 400; font-style: normal;
+  }
+
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Geist Mono', monospace;
+    color: #1a1a1a; background: #fff;
+    font-weight: 400;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 11mm 14mm 9mm 14mm;
+    page-break-after: always;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 5mm;
+  }
+  .logo { text-align: center; }
+  .logo .brand {
+    font-family: 'LaLetraDeDios', cursive;
+    font-weight: 700;
+    font-size: 24pt;
+    color: #d6321f;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .logo .sub {
+    font-family: 'LaLetraDeDios', cursive;
+    font-weight: 400;
+    font-size: 8pt;
+    color: #d6321f;
+    letter-spacing: 2px;
+    margin-top: 0.5mm;
+    text-align: center;
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12mm;
+    row-gap: 4mm;
+    flex: 1;
+  }
+
+  .col-left  { grid-column: 1; }
+  .col-right { grid-column: 2; }
+  .col-full  { grid-column: 1 / 3; }
+
+  h2 {
+    font-family: 'Agrandir', sans-serif;
+    font-weight: 700;
+    font-size: 13pt;
+    margin: 0 0 2mm 0;
+    letter-spacing: 0.5px;
+    color: #000;
+    text-transform: uppercase;
+  }
+  h2 .deco {
+    font-family: 'LaLetraDeDios', cursive;
+    color: #d6321f;
+    font-weight: 400;
+    font-size: 11.5pt;
+    margin-left: 4px;
+    letter-spacing: 1px;
+    text-transform: none;
+  }
+
+  section { break-inside: avoid; }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    line-height: 1.3;
+    margin-bottom: 1.8mm;
+    gap: 4mm;
+  }
+  .item .left { flex: 1; min-width: 0; }
+  .item .name {
+    font-family: 'Geist Mono', monospace;
+    font-weight: 400;
+    color: #000;
+    font-size: 10pt;
+  }
+  .item .desc {
+    font-family: 'Geist Mono', monospace;
+    font-weight: 400;
+    color: #666;
+    font-size: 8.2pt;
+    font-style: italic;
+    margin-top: 0.3mm;
+  }
+  .item .price {
+    font-family: 'Geist Mono', monospace;
+    font-weight: 500;
+    white-space: nowrap;
+    color: #000;
+    font-size: 10pt;
+    padding-top: 0.3mm;
+  }
+
+  /* DULCES con dos columnas internas para aprovechar el ancho */
+  .dulces-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12mm;
+  }
+
+  .footer {
+    margin-top: 4mm;
+    text-align: center;
+    font-family: 'LaLetraDeDios', cursive;
+    font-weight: 400;
+    color: #d6321f;
+    font-size: 8.5pt;
+    letter-spacing: 2px;
+  }
+
+  @media screen {
+    body { background: #e5e5e5; padding: 20px 0; }
+    .page {
+      margin: 0 auto 20px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    body { padding: 0; background: #fff; }
+    .page {
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      padding: 20px 18px;
+      margin: 0;
+      box-shadow: none;
+      page-break-after: auto;
+      overflow: visible;
+    }
+    .header { justify-content: center; margin-bottom: 18px; }
+    .logo .brand { font-size: 30px; }
+    .logo .sub { font-size: 10px; margin-top: 2px; text-align: center; }
+    .content { grid-template-columns: 1fr; column-gap: 0; row-gap: 0; }
+    .col-left, .col-right, .col-full { grid-column: 1; }
+    .dulces-grid { grid-template-columns: 1fr; column-gap: 0; }
+    h2 { font-size: 17px; margin: 0 0 10px 0; }
+    h2 .deco { font-size: 16px; }
+    section { margin-bottom: 22px; }
+    .item { margin-bottom: 12px; gap: 12px; line-height: 1.4; }
+    .item .name { font-size: 14px; }
+    .item .desc { font-size: 12px; margin-top: 2px; }
+    .item .price { font-size: 14px; }
+    .footer { font-size: 12px; padding: 18px 0 4px 0; letter-spacing: 1.5px; margin-top: 0; }
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { margin: 0; box-shadow: none; width: 210mm; height: 297mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <div class="logo">
+      <div class="brand">MESAQUINCE</div>
+      <div class="sub">THE BRASA CLUB</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- FILA 1: PICA PICA | PLATITOS -->
+    <section class="col-left">
+      <h2>PICA-PICA <span class="deco">para empezar</span></h2>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">PAN DE CAMPO con manteca de la casa</div>
+          <div class="desc">country bread, homemade butter</div>
+        </div>
+        <div class="price">4,5</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">CROQUETA de morcilla</div>
+          <div class="desc">blood sausage croquette</div>
+        </div>
+        <div class="price">2,5</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">CROQUETA de entraña</div>
+          <div class="desc">skirt steak croquette</div>
+        </div>
+        <div class="price">2,5</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">GILDA AHUMADA</div>
+          <div class="desc">smoked anchovy, olive & guindilla skewer</div>
+        </div>
+        <div class="price">3,5</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">EMPANADA de carne criolla</div>
+          <div class="desc">argentine pastry filled with seasoned beef</div>
+        </div>
+        <div class="price">5</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">BONIATO AL RESCOLDO, almíbar de naranja, nueces</div>
+          <div class="desc">ember-roasted sweet potato, orange syrup, walnuts</div>
+        </div>
+        <div class="price">7</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">PATATAS ASADAS, crema ácida, cebollino</div>
+          <div class="desc">roasted potatoes, sour cream, chives</div>
+        </div>
+        <div class="price">7</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">COGOLLOS a la brasa, salsa caesar</div>
+          <div class="desc">fire-grilled little gem lettuce, caesar dressing</div>
+        </div>
+        <div class="price">8</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">ZANAHORIAS glaseadas en malbec, labneh</div>
+          <div class="desc">malbec-glazed carrots, labneh</div>
+        </div>
+        <div class="price">9</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">TAQUITOS de secreto ibérico (2u)</div>
+          <div class="desc">iberian pork mini tacos (2 units)</div>
+        </div>
+        <div class="price">9</div>
+      </div>
+    </section>
+
+    <section class="col-right">
+      <h2>PLATITOS <span class="deco">para compartir</span></h2>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">VITEL TONE</div>
+          <div class="desc">argentine vitello tonnato — cold sliced veal, tuna-caper sauce</div>
+        </div>
+        <div class="price">15</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">PROVOLETA, pesto, miel</div>
+          <div class="desc">grilled provolone, pesto, honey</div>
+        </div>
+        <div class="price">16</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">SECRETO ibérico, criolla, puré de boniato</div>
+          <div class="desc">iberian pork secreto, criolla sauce, sweet potato purée</div>
+        </div>
+        <div class="price">18</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">PULPO, puré de hinojo, papines, salsa roja</div>
+          <div class="desc">grilled octopus, fennel purée, baby potatoes, red sauce</div>
+        </div>
+        <div class="price">19</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">MOLLEJAS AHUMADAS, puré de apio nabo, picante</div>
+          <div class="desc">smoked sweetbreads, celeriac purée, chili</div>
+        </div>
+        <div class="price">22</div>
+      </div>
+    </section>
+
+    <!-- FILA 2: CARNE ARGENTINA | COMPLEMENTOS -->
+    <section class="col-left">
+      <h2>CARNE ARGENTINA <span class="deco">a lo que vinimos</span></h2>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">ENTRAÑA con chimichurri</div>
+          <div class="desc">grilled skirt steak, chimichurri · 250g</div>
+        </div>
+        <div class="price">23</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">MILANESA "Napolitana" para compartir</div>
+          <div class="desc">breaded beef, tomato sauce, fresh tomato, mozzarella</div>
+        </div>
+        <div class="price">30</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">VACÍO</div>
+          <div class="desc">flank steak · 300g</div>
+        </div>
+        <div class="price">30</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">BIFE DE CHORIZO, salsa demi-glace</div>
+          <div class="desc">argentine sirloin steak, demi-glace · 300g</div>
+        </div>
+        <div class="price">32</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">OJO DE BIFE</div>
+          <div class="desc">rib eye · 300g</div>
+        </div>
+        <div class="price">34</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">CORTE DEL DÍA</div>
+          <div class="desc">butcher's cut of the day</div>
+        </div>
+        <div class="price">S/M</div>
+      </div>
+    </section>
+
+    <section class="col-right">
+      <h2>COMPLEMENTOS <span class="deco">para acompañar</span></h2>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">Patatas fritas</div>
+          <div class="desc">french fries</div>
+        </div>
+        <div class="price">6</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">Patatas fritas con sal trufada</div>
+          <div class="desc">truffle salt fries</div>
+        </div>
+        <div class="price">7</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">Patatas "no bravas" con alioli y mayo sriracha</div>
+          <div class="desc">crispy potatoes, aioli, sriracha mayo</div>
+        </div>
+        <div class="price">7</div>
+      </div>
+
+      <div class="item">
+        <div class="left">
+          <div class="name">Tomates de temporada aliñados</div>
+          <div class="desc">seasonal tomatoes, dressing</div>
+        </div>
+        <div class="price">7</div>
+      </div>
+    </section>
+
+    <!-- FILA 3: DULCES (full width, 2 col internas) -->
+    <section class="col-full">
+      <h2>DULCES <span class="deco">broche de oro</span></h2>
+
+      <div class="dulces-grid">
+        <div>
+          <div class="item">
+            <div class="left">
+              <div class="name">FLAN de la abuela "Coti", dulce de leche</div>
+              <div class="desc">grandma coti's homemade flan with dulce de leche</div>
+            </div>
+            <div class="price">8</div>
+          </div>
+
+          <div class="item">
+            <div class="left">
+              <div class="name">CHOCOTORTA, nuestra versión</div>
+              <div class="desc">our take on the classic argentine chocolate & cookies cake</div>
+            </div>
+            <div class="price">9</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="item">
+            <div class="left">
+              <div class="name">COPA MOCHA, nuestra versión del espresso martini</div>
+              <div class="desc">coffee cocktail, our twist on the espresso martini</div>
+            </div>
+            <div class="price">12</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer">CONSULTE LOS ALÉRGENOS / PLEASE ASK ABOUT ALLERGENS</div>
+</div>
+
+</body>
+</html>
