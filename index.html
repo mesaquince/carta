@@ -5,36 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carta Mesaquince</title>
 <style>
-  @font-face {
-    font-family: 'Geist Mono';
-    src: url('Fonts/GeistMono-Regular.ttf') format('truetype');
-    font-weight: 400; font-style: normal;
-  }
-  @font-face {
-    font-family: 'Geist Mono';
-    src: url('Fonts/GeistMono-Medium.ttf') format('truetype');
-    font-weight: 500; font-style: normal;
-  }
-  @font-face {
-    font-family: 'Geist Mono';
-    src: url('Fonts/GeistMono-Bold.ttf') format('truetype');
-    font-weight: 700; font-style: normal;
-  }
-  @font-face {
-    font-family: 'Agrandir';
-    src: url('Fonts/Agrandir-TextBold.otf') format('opentype');
-    font-weight: 700; font-style: normal;
-  }
-  @font-face {
-    font-family: 'LaLetraDeDios';
-    src: url('Fonts/LaLetraDeD10S-Bold.otf') format('opentype');
-    font-weight: 700; font-style: normal;
-  }
-  @font-face {
-    font-family: 'LaLetraDeDios';
-    src: url('Fonts/LaLetraDeD10S-Regular.otf') format('opentype');
-    font-weight: 400; font-style: normal;
-  }
+  @font-face { font-family: 'Geist Mono'; src: url('Fonts/GeistMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('Fonts/GeistMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('Fonts/GeistMono-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; }
+  @font-face { font-family: 'Agrandir'; src: url('Fonts/Agrandir-TextBold.otf') format('opentype'); font-weight: 700; font-style: normal; }
+  @font-face { font-family: 'LaLetraDeDios'; src: url('Fonts/LaLetraDeD10S-Bold.otf') format('opentype'); font-weight: 700; font-style: normal; }
+  @font-face { font-family: 'LaLetraDeDios'; src: url('Fonts/LaLetraDeD10S-Regular.otf') format('opentype'); font-weight: 400; font-style: normal; }
 
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; }
@@ -49,41 +25,74 @@
   .page {
     width: 210mm;
     height: 297mm;
-    padding: 11mm 14mm 9mm 14mm;
+    padding: 10mm 14mm 9mm 14mm;
     page-break-after: always;
     position: relative;
-    display: flex;
+    display: none;
     flex-direction: column;
     overflow: hidden;
   }
   .page:last-child { page-break-after: auto; }
 
-  /* Toggle de idioma */
-  .lang-toggle {
-    position: absolute;
-    top: 8mm;
-    right: 12mm;
+  /* Mostrar solo la combinación activa de menú + idioma */
+  body.show-comida.lang-es .page.menu-comida.menu-es,
+  body.show-comida.lang-ca .page.menu-comida.menu-ca,
+  body.show-bebidas.lang-es .page.menu-bebidas.menu-es,
+  body.show-bebidas.lang-ca .page.menu-bebidas.menu-ca { display: flex; }
+
+  /* TOP BAR (nav menú + lang) */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4mm;
+    min-height: 8mm;
+  }
+
+  .menu-nav {
     display: flex;
     align-items: center;
     gap: 4px;
+    font-family: 'Agrandir', sans-serif;
+    font-weight: 700;
+    font-size: 11pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .menu-nav button {
+    background: none; border: none; cursor: pointer;
+    padding: 3px 8px;
+    color: #000;
+    opacity: 0.35;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    transition: opacity 0.2s;
+  }
+  .menu-nav button:hover { opacity: 0.7; }
+  .menu-nav button.active {
+    opacity: 1;
+    border-bottom: 2px solid #d6321f;
+  }
+  .menu-nav .sep { opacity: 0.3; padding: 0 2px; }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 3px;
     font-family: 'LaLetraDeDios', cursive;
     color: #d6321f;
-    font-size: 12pt;
+    font-size: 13pt;
     letter-spacing: 1px;
-    z-index: 10;
     user-select: none;
   }
   .lang-toggle button {
-    background: none;
-    border: none;
-    font-family: inherit;
-    color: inherit;
-    font-size: inherit;
-    letter-spacing: inherit;
-    cursor: pointer;
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; color: inherit;
+    font-size: inherit; letter-spacing: inherit;
     padding: 2px 4px;
     opacity: 0.45;
-    transform: rotate(-2deg);
+    transform: rotate(-3deg);
     transition: opacity 0.2s;
   }
   .lang-toggle button:hover { opacity: 0.8; }
@@ -94,10 +103,6 @@
     text-underline-offset: 3px;
   }
   .lang-toggle .sep { opacity: 0.5; }
-
-  /* Swap visible menu por idioma */
-  body.lang-es .menu-ca { display: none; }
-  body.lang-ca .menu-es { display: none; }
 
   .header {
     display: flex;
@@ -234,27 +239,26 @@
       width: 100%;
       height: auto;
       min-height: 0;
-      padding: 24px 20px 32px 20px;
+      padding: 18px 18px 32px 18px;
       margin: 0;
       box-shadow: none;
       page-break-after: auto;
       overflow: visible;
-      display: block;
     }
-    .lang-toggle {
-      position: static;
-      top: auto;
-      right: auto;
-      display: flex;
-      justify-content: flex-end;
-      font-size: 18px;
-      margin-bottom: 10px;
-      padding: 0;
-    }
-    .lang-toggle button { padding: 4px 6px; transform: rotate(-3deg); }
+    body.show-comida.lang-es .page.menu-comida.menu-es,
+    body.show-comida.lang-ca .page.menu-comida.menu-ca,
+    body.show-bebidas.lang-es .page.menu-bebidas.menu-es,
+    body.show-bebidas.lang-ca .page.menu-bebidas.menu-ca { display: block; }
+
+    .top-bar { margin-bottom: 14px; }
+    .menu-nav { font-size: 13px; letter-spacing: 1px; }
+    .menu-nav button { padding: 4px 6px; }
+    .lang-toggle { font-size: 17px; }
+    .lang-toggle button { padding: 4px 5px; }
+
     .header { justify-content: center; margin-bottom: 22px; }
     .logo .brand { font-size: 34px; }
-    .logo .sub { font-size: 11px; margin-top: 3px; text-align: center; }
+    .logo .sub { font-size: 11px; margin-top: 3px; }
     .content { grid-template-columns: 1fr; column-gap: 0; row-gap: 0; display: block; }
     .col-left, .col-right, .col-full { grid-column: 1; }
     .dulces-grid { grid-template-columns: 1fr; column-gap: 0; }
@@ -278,19 +282,26 @@
   @media print {
     body { background: #fff; padding: 0; }
     .page { margin: 0; box-shadow: none; width: 210mm; height: 297mm; }
-    .lang-toggle { display: none; }
+    .top-bar { display: none; }
   }
 </style>
 </head>
-<body class="lang-es">
+<body class="show-comida lang-es">
 
-<!-- =================== CARTA ES (titulo en español + descripción inglés) =================== -->
-<div class="page menu-es">
+<!-- ============ COMIDA · ES ============ -->
+<div class="page menu-comida menu-es">
 
-  <div class="lang-toggle">
-    <button data-lang="es" class="active">ES</button>
-    <span class="sep">/</span>
-    <button data-lang="ca">CA</button>
+  <div class="top-bar">
+    <div class="menu-nav">
+      <button data-menu="comida" class="active">COMIDA</button>
+      <span class="sep">·</span>
+      <button data-menu="bebidas">BEBIDAS</button>
+    </div>
+    <div class="lang-toggle">
+      <button data-lang="es" class="active">ES</button>
+      <span class="sep">/</span>
+      <button data-lang="ca">CA</button>
+    </div>
   </div>
 
   <div class="header">
@@ -304,7 +315,6 @@
 
     <section class="col-left">
       <h2>PICA-PICA <span class="deco">para empezar</span></h2>
-
       <div class="item"><div class="left"><div class="name">PAN DE CAMPO con manteca de la casa</div><div class="desc">country bread, homemade butter</div></div><div class="price">4,5</div></div>
       <div class="item"><div class="left"><div class="name">CROQUETA de morcilla</div><div class="desc">blood sausage croquette</div></div><div class="price">2,5</div></div>
       <div class="item"><div class="left"><div class="name">CROQUETA de entraña</div><div class="desc">skirt steak croquette</div></div><div class="price">2,5</div></div>
@@ -319,7 +329,6 @@
 
     <section class="col-right">
       <h2>PLATITOS <span class="deco">para compartir</span></h2>
-
       <div class="item"><div class="left"><div class="name">VITEL TONÉ de roastbeef</div><div class="desc">sliced roast beef, classic vitello tonnato sauce (tuna, capers, mayo)</div></div><div class="price">15</div></div>
       <div class="item"><div class="left"><div class="name">PROVOLETA, pesto, miel</div><div class="desc">grilled provolone, pesto, honey</div></div><div class="price">16</div></div>
       <div class="item"><div class="left"><div class="name">SECRETO ibérico, criolla, puré de boniato</div><div class="desc">Iberian pork secreto, criolla sauce, sweet potato purée</div></div><div class="price">18</div></div>
@@ -329,7 +338,6 @@
 
     <section class="col-left">
       <h2>CARNE ARGENTINA <span class="deco">a lo que vinimos</span></h2>
-
       <div class="item"><div class="left"><div class="name">ENTRAÑA con chimichurri</div><div class="desc">grilled skirt steak, chimichurri · 250g</div></div><div class="price">23</div></div>
       <div class="item"><div class="left"><div class="name">MILANESA "Napolitana" para compartir</div><div class="desc">breaded beef, tomato sauce, fresh tomato, mozzarella</div></div><div class="price">30</div></div>
       <div class="item"><div class="left"><div class="name">VACÍO</div><div class="desc">flank steak · 300g</div></div><div class="price">30</div></div>
@@ -340,7 +348,6 @@
 
     <section class="col-right">
       <h2>COMPLEMENTOS <span class="deco">para acompañar</span></h2>
-
       <div class="item"><div class="left"><div class="name">Patatas fritas</div><div class="desc">french fries</div></div><div class="price">6</div></div>
       <div class="item"><div class="left"><div class="name">Patatas fritas con sal trufada</div><div class="desc">truffle salt fries</div></div><div class="price">7</div></div>
       <div class="item"><div class="left"><div class="name">Patatas "no bravas" con alioli y mayo sriracha</div><div class="desc">crispy potatoes, aioli, sriracha mayo</div></div><div class="price">7</div></div>
@@ -349,7 +356,6 @@
 
     <section class="col-full">
       <h2>DULCES <span class="deco">broche de oro</span></h2>
-
       <div class="dulces-grid">
         <div>
           <div class="item"><div class="left"><div class="name">FLAN de la abuela "Coti", dulce de leche</div><div class="desc">grandma Coti's homemade flan with dulce de leche</div></div><div class="price">8</div></div>
@@ -362,18 +368,24 @@
     </section>
 
   </div>
-
   <div class="footer">CONSULTE LOS ALÉRGENOS / PLEASE ASK ABOUT ALLERGENS</div>
 </div>
 
 
-<!-- =================== CARTA CA (título catalán + descripción español) =================== -->
-<div class="page menu-ca">
+<!-- ============ COMIDA · CA ============ -->
+<div class="page menu-comida menu-ca">
 
-  <div class="lang-toggle">
-    <button data-lang="es">ES</button>
-    <span class="sep">/</span>
-    <button data-lang="ca" class="active">CA</button>
+  <div class="top-bar">
+    <div class="menu-nav">
+      <button data-menu="comida" class="active">MENJAR</button>
+      <span class="sep">·</span>
+      <button data-menu="bebidas">BEGUDES</button>
+    </div>
+    <div class="lang-toggle">
+      <button data-lang="es">ES</button>
+      <span class="sep">/</span>
+      <button data-lang="ca" class="active">CA</button>
+    </div>
   </div>
 
   <div class="header">
@@ -387,7 +399,6 @@
 
     <section class="col-left">
       <h2>PICA-PICA <span class="deco">per començar</span></h2>
-
       <div class="item"><div class="left"><div class="name">PA DE PAGÈS amb mantega de la casa</div><div class="desc">pan de campo con mantequilla de la casa</div></div><div class="price">4,5</div></div>
       <div class="item"><div class="left"><div class="name">CROQUETA de botifarra negra</div><div class="desc">croqueta de morcilla</div></div><div class="price">2,5</div></div>
       <div class="item"><div class="left"><div class="name">CROQUETA d'entranya</div><div class="desc">croqueta de entraña</div></div><div class="price">2,5</div></div>
@@ -402,7 +413,6 @@
 
     <section class="col-right">
       <h2>PLATETS <span class="deco">per compartir</span></h2>
-
       <div class="item"><div class="left"><div class="name">VITEL TONÉ de roastbeef</div><div class="desc">roastbeef en lonchas con salsa clásica de vitello tonnato (atún, alcaparras, mayonesa)</div></div><div class="price">15</div></div>
       <div class="item"><div class="left"><div class="name">PROVOLETA, pesto, mel</div><div class="desc">provoleta a la brasa con pesto y miel</div></div><div class="price">16</div></div>
       <div class="item"><div class="left"><div class="name">SECRET ibèric, criolla, puré de moniato</div><div class="desc">secreto ibérico, salsa criolla, puré de boniato</div></div><div class="price">18</div></div>
@@ -412,7 +422,6 @@
 
     <section class="col-left">
       <h2>CARN ARGENTINA <span class="deco">el plat fort</span></h2>
-
       <div class="item"><div class="left"><div class="name">ENTRANYA amb chimichurri</div><div class="desc">entraña con chimichurri · 250g</div></div><div class="price">23</div></div>
       <div class="item"><div class="left"><div class="name">MILANESA "Napolitana" per compartir</div><div class="desc">milanesa napolitana para compartir</div></div><div class="price">30</div></div>
       <div class="item"><div class="left"><div class="name">VACÍO</div><div class="desc">vacío · 300g</div></div><div class="price">30</div></div>
@@ -423,7 +432,6 @@
 
     <section class="col-right">
       <h2>ACOMPANYAMENTS <span class="deco">al costat</span></h2>
-
       <div class="item"><div class="left"><div class="name">Patates fregides</div><div class="desc">patatas fritas</div></div><div class="price">6</div></div>
       <div class="item"><div class="left"><div class="name">Patates fregides amb sal de tòfona</div><div class="desc">patatas fritas con sal trufada</div></div><div class="price">7</div></div>
       <div class="item"><div class="left"><div class="name">Patates "no bravas" amb allioli i maionesa sriracha</div><div class="desc">patatas "no bravas" con alioli y mayo sriracha</div></div><div class="price">7</div></div>
@@ -432,7 +440,6 @@
 
     <section class="col-full">
       <h2>DOLÇOS <span class="deco">el toc final</span></h2>
-
       <div class="dulces-grid">
         <div>
           <div class="item"><div class="left"><div class="name">FLAM de l'àvia "Coti", dolç de llet</div><div class="desc">flan de la abuela Coti con dulce de leche</div></div><div class="price">8</div></div>
@@ -445,29 +452,204 @@
     </section>
 
   </div>
-
   <div class="footer">CONSULTEU ELS AL·LÈRGENS / CONSULTE LOS ALÉRGENOS</div>
 </div>
 
-<script>
-  // Persistencia con localStorage + toggle
-  (function() {
-    var saved = localStorage.getItem('mesaquince-lang') || 'es';
-    document.body.className = 'lang-' + saved;
 
-    function setLang(lang) {
-      document.body.className = 'lang-' + lang;
-      document.querySelectorAll('.lang-toggle button').forEach(function(b) {
+<!-- ============ BEBIDAS · ES ============ -->
+<div class="page menu-bebidas menu-es">
+
+  <div class="top-bar">
+    <div class="menu-nav">
+      <button data-menu="comida">COMIDA</button>
+      <span class="sep">·</span>
+      <button data-menu="bebidas" class="active">BEBIDAS</button>
+    </div>
+    <div class="lang-toggle">
+      <button data-lang="es" class="active">ES</button>
+      <span class="sep">/</span>
+      <button data-lang="ca">CA</button>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="logo">
+      <div class="brand">MESAQUINCE</div>
+      <div class="sub">THE BRASA CLUB</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <section class="col-left">
+      <h2>REFRESCOS <span class="deco">con burbujas</span></h2>
+      <div class="item"><div class="left"><div class="name">Coca-Cola</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Coca-Cola Zero</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Sprite</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Aquarius</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Fuze Tea</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Tónica</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Ginger Ale</div></div><div class="price">3,5</div></div>
+      <div class="item"><div class="left"><div class="name">Ginger Beer</div></div><div class="price">3,5</div></div>
+    </section>
+
+    <section class="col-right">
+      <h2>CAFÉS <span class="deco">para cerrar</span></h2>
+      <div class="item"><div class="left"><div class="name">Espresso</div></div><div class="price">2</div></div>
+      <div class="item"><div class="left"><div class="name">Espresso doble</div></div><div class="price">2,5</div></div>
+      <div class="item"><div class="left"><div class="name">Cortado</div></div><div class="price">2,5</div></div>
+      <div class="item"><div class="left"><div class="name">Café con leche</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Americano</div></div><div class="price">2,5</div></div>
+      <div class="item"><div class="left"><div class="name">Infusión</div></div><div class="price">2</div></div>
+      <div class="item"><div class="left"><div class="name">Café Shakerato</div></div><div class="price">4</div></div>
+      <div class="item"><div class="left"><div class="name">Carajillo</div></div><div class="price">4</div></div>
+    </section>
+
+    <section class="col-left">
+      <h2>AGUAS <span class="deco">sin marca</span></h2>
+      <div class="item"><div class="left"><div class="name">Agua con gas</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Agua sin gas</div></div><div class="price">3</div></div>
+    </section>
+
+    <section class="col-right">
+      <h2>CERVEZAS <span class="deco">bien tiradas</span></h2>
+      <div class="item"><div class="left"><div class="name">Caña lisa 0,20L</div></div><div class="price">2</div></div>
+      <div class="item"><div class="left"><div class="name">Caña Brutus 0,33L</div></div><div class="price">3,5</div></div>
+      <div class="item"><div class="left"><div class="name">Alhambra Reserva 0,33L</div></div><div class="price">4</div></div>
+      <div class="item"><div class="left"><div class="name">Cerveza 0.0 tostada 0,33L</div></div><div class="price">3,5</div></div>
+      <div class="item"><div class="left"><div class="name">Cerveza sin gluten 0,33L</div></div><div class="price">4</div></div>
+    </section>
+
+    <section class="col-full">
+      <h2>VERMUT Y COCTELERÍA <span class="deco">para alargar</span></h2>
+      <div class="dulces-grid">
+        <div>
+          <div class="item"><div class="left"><div class="name">Vermut de la casa</div></div><div class="price">4,5</div></div>
+          <div class="item"><div class="left"><div class="name">Combinados</div><div class="desc">gin tonic, ron cola, etc.</div></div><div class="price">8</div></div>
+        </div>
+        <div>
+          <div class="item"><div class="left"><div class="name">Spritz</div><div class="desc">Campari, Aperol, Hugo</div></div><div class="price">8</div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <div class="footer">CONSULTE LOS ALÉRGENOS / PLEASE ASK ABOUT ALLERGENS</div>
+</div>
+
+
+<!-- ============ BEBIDAS · CA ============ -->
+<div class="page menu-bebidas menu-ca">
+
+  <div class="top-bar">
+    <div class="menu-nav">
+      <button data-menu="comida">MENJAR</button>
+      <span class="sep">·</span>
+      <button data-menu="bebidas" class="active">BEGUDES</button>
+    </div>
+    <div class="lang-toggle">
+      <button data-lang="es">ES</button>
+      <span class="sep">/</span>
+      <button data-lang="ca" class="active">CA</button>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="logo">
+      <div class="brand">MESAQUINCE</div>
+      <div class="sub">THE BRASA CLUB</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <section class="col-left">
+      <h2>REFRESCS <span class="deco">amb bombolles</span></h2>
+      <div class="item"><div class="left"><div class="name">Coca-Cola</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Coca-Cola Zero</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Sprite</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Aquarius</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Fuze Tea</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Tònica</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Ginger Ale</div></div><div class="price">3,5</div></div>
+      <div class="item"><div class="left"><div class="name">Ginger Beer</div></div><div class="price">3,5</div></div>
+    </section>
+
+    <section class="col-right">
+      <h2>CAFÈS <span class="deco">per tancar</span></h2>
+      <div class="item"><div class="left"><div class="name">Espresso</div></div><div class="price">2</div></div>
+      <div class="item"><div class="left"><div class="name">Espresso doble</div></div><div class="price">2,5</div></div>
+      <div class="item"><div class="left"><div class="name">Tallat</div></div><div class="price">2,5</div></div>
+      <div class="item"><div class="left"><div class="name">Cafè amb llet</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Americano</div></div><div class="price">2,5</div></div>
+      <div class="item"><div class="left"><div class="name">Infusió</div></div><div class="price">2</div></div>
+      <div class="item"><div class="left"><div class="name">Cafè Shakerato</div></div><div class="price">4</div></div>
+      <div class="item"><div class="left"><div class="name">Cigaló (Carajillo)</div></div><div class="price">4</div></div>
+    </section>
+
+    <section class="col-left">
+      <h2>AIGÜES <span class="deco">sense marca</span></h2>
+      <div class="item"><div class="left"><div class="name">Aigua amb gas</div></div><div class="price">3</div></div>
+      <div class="item"><div class="left"><div class="name">Aigua sense gas</div></div><div class="price">3</div></div>
+    </section>
+
+    <section class="col-right">
+      <h2>CERVESES <span class="deco">ben tirades</span></h2>
+      <div class="item"><div class="left"><div class="name">Canya lisa 0,20L</div></div><div class="price">2</div></div>
+      <div class="item"><div class="left"><div class="name">Canya Brutus 0,33L</div></div><div class="price">3,5</div></div>
+      <div class="item"><div class="left"><div class="name">Alhambra Reserva 0,33L</div></div><div class="price">4</div></div>
+      <div class="item"><div class="left"><div class="name">Cervesa 0.0 torrada 0,33L</div></div><div class="price">3,5</div></div>
+      <div class="item"><div class="left"><div class="name">Cervesa sense gluten 0,33L</div></div><div class="price">4</div></div>
+    </section>
+
+    <section class="col-full">
+      <h2>VERMUT I COCTELERIA <span class="deco">per allargar</span></h2>
+      <div class="dulces-grid">
+        <div>
+          <div class="item"><div class="left"><div class="name">Vermut de la casa</div></div><div class="price">4,5</div></div>
+          <div class="item"><div class="left"><div class="name">Combinats</div><div class="desc">gintònic, rom-cola, etc.</div></div><div class="price">8</div></div>
+        </div>
+        <div>
+          <div class="item"><div class="left"><div class="name">Spritz</div><div class="desc">Campari, Aperol, Hugo</div></div><div class="price">8</div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <div class="footer">CONSULTEU ELS AL·LÈRGENS / CONSULTE LOS ALÉRGENOS</div>
+</div>
+
+
+<script>
+  (function() {
+    var menu = localStorage.getItem('mq-menu') || 'comida';
+    var lang = localStorage.getItem('mq-lang') || 'es';
+
+    function apply() {
+      document.body.className = 'show-' + menu + ' lang-' + lang;
+      document.querySelectorAll('[data-menu]').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.menu === menu);
+      });
+      document.querySelectorAll('[data-lang]').forEach(function(b) {
         b.classList.toggle('active', b.dataset.lang === lang);
       });
-      try { localStorage.setItem('mesaquince-lang', lang); } catch(e) {}
     }
 
-    setLang(saved);
+    apply();
 
-    document.querySelectorAll('.lang-toggle button').forEach(function(btn) {
+    document.querySelectorAll('[data-menu]').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        setLang(btn.dataset.lang);
+        menu = btn.dataset.menu;
+        try { localStorage.setItem('mq-menu', menu); } catch(e) {}
+        apply();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+    document.querySelectorAll('[data-lang]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        lang = btn.dataset.lang;
+        try { localStorage.setItem('mq-lang', lang); } catch(e) {}
+        apply();
       });
     });
   })();
